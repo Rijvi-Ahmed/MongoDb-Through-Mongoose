@@ -1,0 +1,262 @@
+package.json creation
+->npm init -y
+
+run mongodb on cmd
+->"C:\Program Files\MongoDB\Server\4.4\bin\mongo.exe"
+
+set enviroment path then type for run
+->mongo
+
+show database
+->show dbs
+
+create database or presenting database to work
+->use databasename
+
+create collection and document with fields
+->db.collection_name.insertOne({field_name})
+
+chech current active databse
+->db
+
+collections show
+->show collections
+ 
+show total data
+->db.collection_name.find().pretty()
+
+for exit database cmd
+->quit()
+
+create multiple documents with field using array
+->db.collection_name.insertMany([{field_name},{field_name},{field_name}])
+
+CRUD operation
+->db.collection.find(query,projection)
+query=operation
+projection= show operation or not
+
+limit(1)=> means first data of database is shown = findOne() are same as limit(1)
+
+
+some operation(CRUD operation)
+
+>  use Rijvi
+switched to db Rijvi
+
+> show collections
+akash
+> db.akash.find()
+{ "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"), "name" : "riya", "type" : "female", "age" : 27, "active" : true }
+
+
+> db.akash.find().pretty()
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+
+> db.akash.insertMany([{name:"Aronno",type:"female",age:24},{name:"Rony",type:"male",age:34},{name:"Rafi",type:"male",age:21}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("60afbb8f648ee78538a3a134"),
+                ObjectId("60afbb8f648ee78538a3a135"),
+                ObjectId("60afbb8f648ee78538a3a136")
+        ]
+}
+
+> db.akash.find().pretty()
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a134"),
+        "name" : "Aronno",
+        "type" : "female",
+        "age" : 24
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a135"),
+        "name" : "Rony",
+        "type" : "male",
+        "age" : 34
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a136"),
+        "name" : "Rafi",
+        "type" : "male",
+        "age" : 21
+}
+> db.akash.find({name:"Rafi"})
+{ "_id" : ObjectId("60afbb8f648ee78538a3a136"), "name" : "Rafi", "type" : "male", "age" : 21 }
+
+> db.akash.find({name:"Rafi"}).pretty()
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a136"),
+        "name" : "Rafi",
+        "type" : "male",
+        "age" : 21
+}
+> db.akash.find({name:"Rafi"},{name:1}).pretty()
+{ "_id" : ObjectId("60afbb8f648ee78538a3a136"), "name" : "Rafi" }
+
+> db.akash.find({name:"Rafi"},{_id:0,name:0}).pretty()
+{ "type" : "male", "age" : 21 }
+
+> db.akash.find({name:"Rafi"},{_id:0,name:1}).pretty()
+{ "name" : "Rafi" }
+
+> db.akash.find({active:true}).pretty()
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+> db.akash.find({active:true}).pretty().limit(1)
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+> db.akash.find({active:true}).pretty().limit(2)
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+> db.akash.findOne({active:true})
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+
+> db.akash.find({type:"female"}).pretty().limit(1).skip(1)
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a134"),
+        "name" : "Aronno",
+        "type" : "female",
+        "age" : 24
+}
+
+
+> db.akash.find({type:"male"}).pretty().limit(2)
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a135"),
+        "name" : "Rony",
+        "type" : "male",
+        "age" : 34
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a136"),
+        "name" : "Rafi",
+        "type" : "male",
+        "age" : 21
+}
+> db.akash.find({type:"male"}).pretty().limit(2).skip(1)
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a136"),
+        "name" : "Rafi",
+        "type" : "male",
+        "age" : 21
+}
+
+
+upadate operation
+upadteone()=> db.collection_name.updateOne(<filter or qurey>,<update>)
+upadteMany()=> db.collection_name.updateMany(<filter or qurey>,<update>)
+
+$set operator replace the value of the field with the specified value
+example
+
+> db.akash.updateOne({name:"riya"},{$set:{type:"male"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.akash.find({name:"riya"}).pretty()
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "male",
+        "age" : 27,
+        "active" : true
+}
+> db.akash.updateMany({type:"male"},{$set:{type:"female"}})
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+> db.akash.find().pretty()
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a134"),
+        "name" : "Aronno",
+        "type" : "female",
+        "age" : 24
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a135"),
+        "name" : "Rony",
+        "type" : "female",
+        "age" : 34
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a136"),
+        "name" : "Rafi",
+        "type" : "female",
+        "age" : 21
+}
+>
+
+delete operation
+deleteMany()=> db.collection_name.deleteMany(delete critteria)
+
+> db.akash.deleteOne({age:34})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.akash.find().pretty()
+{
+        "_id" : ObjectId("60afb5dc09eb1a76bcd7a0c5"),
+        "name" : "riya",
+        "type" : "female",
+        "age" : 27,
+        "active" : true
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a134"),
+        "name" : "Aronno",
+        "type" : "female",
+        "age" : 24
+}
+{
+        "_id" : ObjectId("60afbb8f648ee78538a3a136"),
+        "name" : "Rafi",
+        "type" : "female",
+        "age" : 21
+}
+> db.akash.deleteMany({type:"female"})
+{ "acknowledged" : true, "deletedCount" : 3 }
+> db.akash.find().pretty()
+
+for all delete
+> db.akash.deleteOne({})
+
+
+
+
